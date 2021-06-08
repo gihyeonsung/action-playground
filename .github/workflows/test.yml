@@ -24,9 +24,7 @@ jobs:
     - name: Release the artifacts
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          build/a.tar.gz
-          build/b.tar.gz
+        files: build/*.tar.gz
         name: Release @ ${{ steps.date.outputs.date }}
         tag_name: test
       env:
