@@ -1,4 +1,4 @@
-name: Test
+name: Weekly Release
 
 on: [push]
 
@@ -17,7 +17,7 @@ jobs:
       uses: dev-drprasad/delete-tag-and-release@v0.2.0
       with:
         delete_release: true
-        tag_name: test
+        tag_name: weekly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -25,7 +25,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: build/*.tar.gz
-        name: Release @ ${{ steps.date.outputs.date }}
-        tag_name: test
+        name: Weekly Release @ ${{ steps.date.outputs.date }}
+        body: |
+          Automatically generated weekly release at ${{ steps.date.outputs.date }}.
+        tag_name: weekly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
