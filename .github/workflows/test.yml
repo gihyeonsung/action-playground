@@ -28,6 +28,8 @@ jobs:
         name: Weekly Release @ ${{ steps.date.outputs.date }}
         body: |
           Automatically generated weekly release at ${{ steps.date.outputs.date }}.
+
+          Built @ ${{ github.sha }}.
         tag_name: weekly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
