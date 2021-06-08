@@ -22,5 +22,6 @@ jobs:
         files: |
           test.tar.gz
         name: Release @ ${{ steps.date.outputs.date }}
+        tag_name: ${{ steps.date.outputs.date }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
