@@ -1,0 +1,26 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Create some mock artifacts
+      run: echo "yeahh" >> test.tar.gz
+
+    - name: Release the artifacts
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          test.tar.gz
+        name: Release @ ${{ steps.date.outputs.date }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
