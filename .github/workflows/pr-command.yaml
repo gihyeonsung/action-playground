@@ -15,47 +15,14 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            try {
-              const command = context.payload.comment.body.trim();
-              console.log(`Received command: ${command}`);
-              
-              if (command.startsWith('/label')) {
-                const labelParts = command.split(' ');
-                if (labelParts.length < 2) {
-                  console.log('No label specified');
-                  return;
-                }
-                
-                const label = labelParts[1];
-                const prNumber = context.payload.issue.number;
-                
-                console.log(`Adding label "${label}" to PR #${prNumber}`);
-                
-                await github.rest.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  labels: [label]
-                });
-                
-                console.log(`Successfully added label "${label}"`);
-                
-                // PR에 확인 comment 추가
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  body: `✅ 라벨 \`${label}\`이 추가되었습니다.`
-                });
-              }
-            } catch (error) {
-              console.error('Error:', error);
-              
-              // 에러 comment 추가
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.issue.number,
-                body: `❌ 라벨 추가 중 오류가 발생했습니다: ${error.message}`
-              });
+            const command = context.payload.comment.body.trim();
+            if (!command.startsWith('/label')) {
+              return;
             }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: [command.split(' ')[1]]
+            });
